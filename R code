@@ -1,0 +1,136 @@
+
+This Dataset contain the following variables:
+
+#ID	Unique ID
+#Gender	Gender of the customer
+#Ever_Married	Marital status of the customer
+#Age	Age of the customer
+#Graduated	Is the customer a graduate?
+#Profession	Profession of the customer
+#Work_Experience	Work Experience in years
+#Spending_Score	Spending score of the customer
+#Family_Size	Number of family members for the customer (including the customer)
+#Var_1	Anonymised Category for the customer
+#Segmentation	(target) Customer Segment of the customer
+
+
+#code for boxplot. It's the plot with the name Age Distribution grouped By the profession of customers.
+subset <- data.frame(na.omit(data_train_automobile$Profession), na.omit(data_train_automobile$Age))
+g <- ggplot(subset, aes(x =na.omit(data_train_automobile$Profession), y = na.omit(data_train_automobile$Age), fill = na.omit(data_train_automobile$Profession)))
+g <- g + geom_boxplot()
+g <- g + xlab("Professions") + ylab("Age in Years") + labs(title = "Age Distribution grouped by Professions")
+g <- g + guides(fill=guide_legend(title=NULL))
+print(g)
+
+#In the above plot we can see that, most customers are likely to be 40 years old, except lawyers that are 70+ years old.
+
+
+###################################################################
+###  Multinomial logistic Regression
+###################################################################
+
+mult <- multinom(Segmentation ~ .,data=data_train_automobile)
+summary(mult)
+head(mult$fitted)
+pre<-predict(mult,data=data_test_automobile)
+confusionMatrix(pre[1:2154],factor(data_test_automobile$Segmentation),mode = "everything")
+
+# Accuracy = 25.8%
+
+
+###################################################################
+###  Naive Bayes
+###################################################################
+
+nbm <- naiveBayes(y =data_train_automobile$Segmentation, x = data_train_automobile[,-10])
+nbclass <- predict(nbm, newdata=data_test_automobile)
+table(data_test_automobile$Segmentation[1:2267], nbclass)
+confusionMatrix(nbclass,factor(data_test_automobile$Segmentation))
+
+# Accuracy = 31.9%
+
+
+###################################################################
+###  Linear Discriminant Analysis
+###################################################################
+
+lda1<-lda(Segmentation~.,data=data_train_automobile)
+pre1<- predict(lda1,  newdata = as.data.frame(data_train_automobile[,-10]))$class
+table(data_train_automobile$Segmentation, pre1)
+length(pre1)
+
+confusionMatrix(pre1[1:2154],factor(data_test_automobile$Segmentation),mode = "everything")
+
+# Accuracy = 26.6%
+
+
+###################################################################
+###  Quadratic Discriminant Analysis
+###################################################################
+
+qda1<-qda(Segmentation ~ ., data = data_train_automobile)
+pre2<-predict(qda1, data = as.data.frame(data_test_automobile$Segmentation[,-10]))$class
+confusionMatrix(pre2[1:2267],factor(data_test_automobile$Segmentation),mode = "everything")
+
+# Accuracy = 23.8%
+
+
+###################################################################
+###  Classification Tree
+###################################################################
+
+fit1<-tree(factor(Segmentation) ~ ., data = data_train_automobile)
+tr<- predict(fit1,type='class')
+confusionMatrix(tr[1:2267],factor(data_test_automobile$Segmentation),mode = "everything")
+
+# Accuracy = 23.8%
+
+
+###################################################################
+###  Random Forest
+###################################################################
+
+
+
+RF_model<-randomForest(Segmentation~.,data=data_train_automobile,importance=TRUE)
+fitforest1<-predict(RF_model,newdata=data_test_automobile)
+confusionMatrix(factor(fitforest1),data_test_automobile$Segmentation,mode = "everything")
+
+# Accuracy = 32.2%
+
+
+###################################################################
+###  Support Vector Machine
+###################################################################
+
+
+svm_model <- svm(factor(Segmentation) ~ ., data = data_train_automobile)
+svm.pred <- predict(svm_model, data_test_automobile[,-10])
+confusionMatrix(svm.pred[1:2267],factor(data_test_automobile$Segmentation))
+
+# Accuracy = 33.2%
+
+
+Conclusions:
+
+1) Multinomial Logistic Regression Accuracy: 25.8%
+
+2) Naive Bayes Accuracy: 31.9%
+
+3) LDA Accuracy: 26.6%
+
+4) QDA Accuracy: 23.8%
+
+5) Decision Tree Accuracy: 23.8%
+
+6) Random Forest Accuracy: 32.2%
+
+7) SVM Accuracy: 33.2%
+
+
+Out of the 7 algorithms We conclude that the best model based on accuracy is SVM. 
+
+The point is that all models have poor performance and there are ways to improve them. 
+
+So, in the next file we will implement feature engineering into our data and test again the performance of our models.
+
