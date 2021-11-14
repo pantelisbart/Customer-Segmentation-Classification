@@ -6,7 +6,7 @@ mult <- multinom(Segmentation ~ .,data=data_train_automobile)
 pre<-predict(mult,data=data_test_automobile)
 confusionMatrix(pre[1:2267],factor(data_test_automobile$Segmentation),mode = "everything")
 
-#Accuracy: 24.4%
+#Accuracy: 26.1%
 
 
 ###################################################################
@@ -17,7 +17,7 @@ nbm <- naiveBayes(y =data_train_automobile$Segmentation, x = data_train_automobi
 nbclass <- predict(nbm, newdata=data_test_automobile)
 confusionMatrix(nbclass,factor(data_test_automobile$Segmentation))
 
-#Accuracy: 32.7%
+#Accuracy: 32.4%
 
 
 ###################################################################
@@ -28,7 +28,7 @@ lda1<-lda(Segmentation~.,data=data_train_automobile)
 pre1<- predict(lda1,  newdata = as.data.frame(data_train_automobile[,-10]))$class
 confusionMatrix(pre1[1:2267],factor(data_test_automobile$Segmentation),mode = "everything")
 
-#Accuracy: 24.8%
+#Accuracy: 25.8%
 
 
 ###################################################################
@@ -39,7 +39,7 @@ qda1<-qda(Segmentation ~ ., data = data_train_automobile)
 pre2<-predict(qda1, data = as.data.frame(data_test_automobile$Segmentation[,-10]))$class
 confusionMatrix(pre2[1:2267],factor(data_test_automobile$Segmentation),mode = "everything")
 
-#Accuracy: 24.6%
+#Accuracy: 25.4%
 
 
 ###################################################################
@@ -50,7 +50,7 @@ fit1<-tree(factor(Segmentation) ~ ., data = data_train_automobile)
 tr<- predict(fit1,type='class')
 confusionMatrix(tr[1:2267],factor(data_test_automobile$Segmentation),mode = "everything")
 
-#Accuracy: 25.6%
+#Accuracy: 26.0%
 
 
 ###################################################################
@@ -72,13 +72,27 @@ svm_model <- svm(factor(Segmentation) ~ ., data = data_train_automobile)
 svm.pred <- predict(svm_model, data_test_automobile[,-10])
 confusionMatrix(svm.pred[1:2267],factor(data_test_automobile$Segmentation))
 
-#Accuracy: 25.6%
+#Accuracy: 32.3%
 
 
+Conclusions:
+
+1) Multinomial Logistic Regression Accuracy: 26.1%
+
+2) Naive Bayes Accuracy: 32.4%
+
+3) LDA Accuracy: 25.8%
+
+4) QDA Accuracy: 25.4%
+
+5) Decision Tree Accuracy: 26%
+
+6) Random Forest Accuracy: 32.2%
+
+7) SVM Accuracy: 32.3%
 
 
+#We conclude that now the best model with a very close distance is the naive bayes model.
 
-
-
-
+#Even though we did some feature engineering the performance of the models didn't improve dramatically. So, maybe we must look other options , such as to acquire more data.
 
