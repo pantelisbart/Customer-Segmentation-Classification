@@ -15,5 +15,6 @@ Classification Algorithms used in this excercise:
 
 Also, we will use feature engineering in order to improve our models' performance.
 
-Acknowledgements
+Acknowledgements:
+
 This dataset was acquired from the Analytics Vidhya hackathon.
