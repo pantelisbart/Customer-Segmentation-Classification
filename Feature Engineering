@@ -1,0 +1,53 @@
+
+#We will convert categorical variables into numerical and check whether it will change the performance of models or not.
+
+#Train Dataset
+find    <- c("Male","Female")
+replace <- c(0,1)
+data_train_automobile$Gender  <- match(data_train_automobile$Gender, find)
+
+find    <- c("No","Yes")
+replace <- c(0,1)
+data_train_automobile$Ever_Married  <- match(data_train_automobile$Ever_Married, find)
+
+find    <- c("No","Yes")
+replace <- c(0,1)
+data_train_automobile$Graduated  <- match(data_train_automobile$Graduated, find)
+
+find    <- c("Low","Average","High")
+replace <- c(1,2,3)
+data_train_automobile$Spending_Score  <- match(data_train_automobile$Spending_Score, find)
+
+find    <- c("Cat_1","Cat_2","Cat_3","Cat_4","Cat_5","Cat_6","Cat_7")
+replace <- c(1,2,3,4,5,6,7)
+data_train_automobile$Var_1 <- match(data_train_automobile$Var_1, find)
+
+find    <- c("Artist","Doctor","Engineer","Entertainment","Executive","Healthcare","Homemaker","Lawyer","Marketing")
+replace <- c(1,2,3,4,5,6,7)
+data_train_automobile$Profession <- match(data_train_automobile$Profession, find)
+
+# Test Dataset
+find    <- c("Male","Female")
+replace <- c(0,1)
+data_test_automobile$Gender  <- match(data_test_automobile$Gender, find)
+
+find    <- c("No","Yes")
+replace <- c(0,1)
+data_test_automobile$Ever_Married  <- match(data_test_automobile$Ever_Married, find)
+
+find    <- c("No","Yes")
+replace <- c(0,1)
+data_test_automobile$Graduated  <- match(data_test_automobile$Graduated, find)
+
+find    <- c("Low","Average","High")
+replace <- c(1,2,3)
+data_test_automobile$Spending_Score  <- match(data_test_automobile$Spending_Score, find)
+
+find    <- c("Cat_1","Cat_2","Cat_3","Cat_4","Cat_5","Cat_6","Cat_7")
+replace <- c(1,2,3,4,5,6,7)
+data_test_automobile$Var_1 <- match(data_test_automobile$Var_1, find)
+
+find    <- c("Artist","Doctor","Engineer","Entertainment","Executive","Healthcare","Homemaker","Lawyer","Marketing")
+replace <- c(1,2,3,4,5,6,7)
+data_test_automobile$Profession <- match(data_test_automobile$Profession, find)
+
